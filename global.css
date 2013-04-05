@@ -1,0 +1,90 @@
+html, body{
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+#bg { position: fixed; top: 0; left: 0; z-index: -1;}
+.bgwidth { width: 100%; }
+.bgheight { height: 100%; }
+
+#content{
+	z-index: 100;
+	max-width: 1200px;
+	margin: 20px auto;
+}
+
+#output{
+	background-color: #eee;
+	font-family: monospace;
+	overflow-y: scroll;
+	color: #333;
+}
+
+#input{
+	width: 100%;
+	background-color: #111;
+	color: #eee;
+	border: none;
+	font-family: monospace;
+	box-sizing: border-box;
+	padding: 10px;
+	outline: 2px solid #444;
+}
+
+#input:focus{
+	outline-color: #ccc;
+}
+
+#license{
+	max-width: 500px;
+	margin: 0px auto;
+	background-color: #ccc;
+	color: #333;
+	text-align: center;
+}
+
+p{
+	margin: 1px .3em;
+	padding: .3em;
+}
+
+.str_input{
+	color: #eee;
+	background-color: #111;
+	margin-top: 1.6em;
+}
+
+.str_debug{
+	color: red;
+	font-weight: bold;
+}
+
+.str_status{
+	color: #66f;
+	background-color: #fff;
+}
+
+.str_change, .str_item, .str_current{
+	color: #555;
+	background: #ccc;
+	padding-left: 3em;
+}
+
+.str_options{
+	color: #fff;
+	background: #66f;
+}
+
+.str_warning{
+	color: #ff4;
+	background: #555;
+}
+
+.str_current{
+	color: #66f;
+}
+
+.str_title{
+	font-weight: bold;
+}
