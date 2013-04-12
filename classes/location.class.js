@@ -1,6 +1,6 @@
-const LOCATION_PLANET = 0;
-const LOCATION_STATION = 1;
-const LOCATION_DEBRIS = 2;
+var LOCATION_PLANET = 0;
+var LOCATION_STATION = 1;
+var LOCATION_DEBRIS = 2;
 
 function Location(type){
 	switch(type){
@@ -22,35 +22,35 @@ function Location(type){
 
 	this.timesAdventured = 0;
 	this.adventuredWarning = 0;
+}
 
-	this.adventuredAt = function(time, arrival){
-		if(typeof(arrival) == 'undefined') arrival = false;
-		this.timesAdventured += time;
-		if(this.type == LOCATION_DEBRIS){
-			if((this.timesAdventured > 80 && this.adventuredWarning < 80) || arrival){
-				this.adventuredWarning = 80;
-				write('The debris field is practically empty, save for some worthless scrap. There is almost no treasure available here.', 'str_warning');
-			} else if((this.timesAdventured > 50 && this.adventuredWarning < 50) || arrival){
-				this.adventuredWarning = 50;
-				write('The debris field is starting to thin out. There is less treasure available here.', 'str_warning');
-			} else if((this.timesAdventured > 20 && this.adventuredWarning < 20) || arrival){
-				this.adventuredWarning = 20;
-				write('Some of the less dedicated scavengers have begun to leave - the main parts of the debris have been picked over.', 'str_warning');
-			}
+Location.prototype.adventuredAt = function(time, arrival){
+	if(typeof(arrival) == 'undefined') arrival = false;
+	this.timesAdventured += time;
+	if(this.type == LOCATION_DEBRIS){
+		if((this.timesAdventured > 80 && this.adventuredWarning < 80) || arrival){
+			this.adventuredWarning = 80;
+			write('The debris field is practically empty, save for some worthless scrap. There is almost no treasure available here.', 'str_warning');
+		} else if((this.timesAdventured > 50 && this.adventuredWarning < 50) || arrival){
+			this.adventuredWarning = 50;
+			write('The debris field is starting to thin out. There is less treasure available here.', 'str_warning');
+		} else if((this.timesAdventured > 20 && this.adventuredWarning < 20) || arrival){
+			this.adventuredWarning = 20;
+			write('Some of the less dedicated scavengers have begun to leave - the main parts of the debris have been picked over.', 'str_warning');
 		}
 	}
+}
 
-	this.toString = function(){
-		var lType;
-		if(this.type == LOCATION_PLANET) lType = 'planet';
-		else if(this.type == LOCATION_STATION) lType = 'station';
-		else if(this.type == LOCATION_DEBRIS) lType = 'debris field';
-		return this.name + ' (' + lType + ')' + ', level ' + this.level;
-	}
+Location.prototype.toString = function(){
+	var lType;
+	if(this.type == LOCATION_PLANET) lType = 'planet';
+	else if(this.type == LOCATION_STATION) lType = 'station';
+	else if(this.type == LOCATION_DEBRIS) lType = 'debris field';
+	return this.name + ' (' + lType + ')' + ', level ' + this.level;
+}
 
-	this.getRandomCreatureName = function(){
-		return this.alienNames[Math.floor(Math.random() * this.alienNames.length)];
-	}
+Location.prototype.getRandomCreatureName = function(){
+	return this.alienNames[Math.floor(Math.random() * this.alienNames.length)];
 }
 
 function generateAlienNameArray(){

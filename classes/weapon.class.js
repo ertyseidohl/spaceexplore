@@ -2,20 +2,6 @@ var WEAPON_LASER = 0;
 var WEAPON_KINETIC = 1;
 var WEAPON_ANTIMATTER = 2;
 
-Weapon.prototype.toString = function(){
-	var wType;
-	if(type == WEAPON_LASER) wType = 'laser';
-	else if(type == WEAPON_KINETIC) wType = 'kinetic';
-	else if(type == WEAPON_ANTIMATTER) wType = 'antimatter';
-	else assert(false, 'Weapon type in toString is not a known type.');
-
-	return this.getName() + ' (' + wType + '): (Max Damage: ' + damage + '; Crit Chance: ' + (1/critDie) + '; Clip Size: ' + clipSize + '), Ammo: ' + ammo + ' loaded, plus ' + clips + ' extra clips';
-}
-
-Weapon.prototype.getName(){
-	return this.special.name + ' ' + this.name;
-}
-
 Weapon = function(name, special, damage, type, critDie, clipSize, ammo, clips){
 	this.name = name;
 	this.special = special;
@@ -34,39 +20,53 @@ Weapon = function(name, special, damage, type, critDie, clipSize, ammo, clips){
 	this.critDie = critDie;
 		assert(isInteger(this.critDie), 'New weapon crit die is not an integer');
 		assert(this.critDie > 0, 'New weapon crit die is not greater than 0');
+}
 
-	this.getDamage = function(enemy, location){
-		var baseDamage = special.getDamage(this, enemy);
-		var roll = Math.floor(Math.random() * 20);
-		if(roll >= this.critDie){
-			if(enemy.isCrittable()){
-				write('You hit the ' + enemy.name + ' critically!');
-				enemy.takeDamage(baseDamage * 2);
-			} else {
-				write('Your shot is true, but it doesn\'t seem to even bother the ' + enemy.name + ', since it doesn\'t seem to have any major vital points.');
-				enemy.takeDamage(baseDamage);
-			}
+Weapon.prototype.toString = function(){
+	var wType;
+	if(this.type == WEAPON_LASER) wType = 'laser';
+	else if(this.type == WEAPON_KINETIC) wType = 'kinetic';
+	else if(this.type == WEAPON_ANTIMATTER) wType = 'antimatter';
+	else assert(false, 'Weapon type in toString is not a known type.');
+
+	return this.getName() + ' (' + wType + '): (Max Damage: ' + this.damage + '; Crit Chance: ' + (1/this.critDie) + '; Clip Size: ' + this.clipSize + '), Ammo: ' + this.ammo + ' loaded, plus ' + this.clips + ' extra clips';
+}
+
+Weapon.prototype.getName = function(){
+	return this.special.name + ' ' + this.name;
+}
+
+Weapon.prototype.getDamage = function(){
+	var baseDamage = this.special.getDamage(this, enemy);
+	var roll = Math.floor(Math.random() * 20);
+	if(roll >= this.critDie){
+		if(enemy.isCrittable()){
+			write('You hit the ' + enemy.name + ' critically!');
+			enemy.takeDamage(baseDamage * 2);
 		} else {
-			write('Your shot hits the ' + enemy.name + '!');
+			write('Your shot is true, but it doesn\'t seem to even bother the ' + enemy.name + ', since it doesn\'t seem to have any major vital points.');
 			enemy.takeDamage(baseDamage);
 		}
+	} else {
+		write('Your shot hits the ' + enemy.name + '!');
+		enemy.takeDamage(baseDamage);
 	}
+}
 
-	this.changeClips = function(dc){
-			assert(isInteger(dc), 'change is not an integer in Weapon.changeClips');
-			assert(dc != 0, 'change is 0 in Weapon.changeClips');
-		this.clips += dc;
-		if(dc > 0){
-			write('Your ' + this.name + ' clips have increased by ' + dc + ' to ' + this.clips, 'str_change');
-		} else if(dc < 0){
-			if(this.clips < 0) this.clips = 0;
-			write('Your ' + this.name + ' clips have decreased by ' + (-1 * dc) + ' to ' + this.clips, 'str_change');
-		}
+Weapon.prototype.changeClips = function(dc){
+		assert(isInteger(dc), 'change is not an integer in Weapon.changeClips');
+		assert(dc != 0, 'change is 0 in Weapon.changeClips');
+	this.clips += dc;
+	if(dc > 0){
+		write('Your ' + this.name + ' clips have increased by ' + dc + ' to ' + this.clips, 'str_change');
+	} else if(dc < 0){
+		if(this.clips < 0) this.clips = 0;
+		write('Your ' + this.name + ' clips have decreased by ' + (-1 * dc) + ' to ' + this.clips, 'str_change');
 	}
+}
 
-	this.isMelee = function(){
-		return this.type.melee;
-	}
+Weapon.prototype.isMelee = function(){
+	return this.type.melee;
 }
 
 function createRandomWeapon(){

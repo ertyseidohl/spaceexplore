@@ -1,14 +1,14 @@
-const CREATURE_SLIME = 1;
-const CREATURE_INSECTOID = 2;
-const CREATURE_ANIMAL = 3;
-const CREATURE_HUMAN = 4;
-const CREATURE_GREY = 5;
+var CREATURE_SLIME = 1;
+var CREATURE_INSECTOID = 2;
+var CREATURE_ANIMAL = 3;
+var CREATURE_HUMAN = 4;
+var CREATURE_GREY = 5;
 
-const CREATURE_ANGER_NONE = 10;
-const CREATURE_ANGER_BAD_DAY = 30;
-const CREATURE_ANGER_MAD = 50;
-const CREATURE_ANGER_ENRAGED = 70;
-const CREATUER_ANGER_OVERLOAD = 90;
+var CREATURE_ANGER_NONE = 10;
+var CREATURE_ANGER_BAD_DAY = 30;
+var CREATURE_ANGER_MAD = 50;
+var CREATURE_ANGER_ENRAGED = 70;
+var CREATUER_ANGER_OVERLOAD = 90;
 
 function Creature(name, health, weaponsArray, angerLevel, evolutionLevel){
 	this.name = name;
@@ -18,24 +18,24 @@ function Creature(name, health, weaponsArray, angerLevel, evolutionLevel){
 	this.evolutionLevel = evolutionLevel;
 
 	this.currentWeapon = this.weaponsArray[0];
+}
 
-	this.getDamage = function(){
-		var roll = Math.floor(Math.random() * 20);
-		if(roll >= this.currentWeapon.critDie){
-			write('The ' + this.name + '\'s ' + this.name + ' hits you perfectly!');
-			return this.currentWeapon.damage * 2;
-		}
-		return Math.max(Math.floor(this.currentWeapon.damage * Math.random()), 1);
+Creature.prototype.getDamage = function(){
+	var roll = Math.floor(Math.random() * 20);
+	if(roll >= this.currentWeapon.critDie){
+		write('The ' + this.name + '\'s ' + this.name + ' hits you perfectly!');
+		return this.currentWeapon.damage * 2;
 	}
+	return Math.max(Math.floor(this.currentWeapon.damage * Math.random()), 1);
+}
 
-	this.isCrittable = function(){
-		if(this.evolutionLevel == CREATURE_SLIME) return false;
-		return true;
-	}
+Creature.prototype.isCrittable = function(){
+	if(this.evolutionLevel == CREATURE_SLIME) return false;
+	return true;
+}
 
-	this.getName = function(){
-		return this.name;
-	}
+Creature.prototype.getName = function(){
+	return this.name;
 }
 
 function createRandomCreature(location){
